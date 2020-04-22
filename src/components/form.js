@@ -1,8 +1,37 @@
-import {TYPES_OF_TRANSFER} from "../const.js";
-import {TYPES_OF_ACTIVITY} from "../const.js";
-import {CITIES} from "../const.js";
+import {TYPES_OF_TRANSFER} from "../consts.js";
+import {TYPES_OF_ACTIVITY} from "../consts.js";
+import {CITIES} from "../consts.js";
+import {createElement} from "../utils.js";
 
-export const createFormTemplate = (events, options) =>
+const getEditEventTemplate = ({description, offers, urls}, options) =>
+  `<form class="trip-events__item  event  event--edit" action="#" method="post">
+  <section class="event__details">
+    <section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+      ${options.map((option) =>`<div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${option.id}-1" type="checkbox" name="event-offer-${option.id}" ${(Array.from(offers).filter((offer) => offer.option === option.option)).length > 0 ? `checked` : ``}>
+          <label class="event__offer-label" for="event-offer-${option.id}-1">
+            <span class="event__offer-title">${option.option}</span>
+            &plus;
+            &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
+          </label>
+        </div>`).join(``)}
+      </div>
+    </section>
+    <section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${Array.from(description)}</p>
+      <div class="event__photos-container">
+        <div class="event__photos-tape">
+        ${Array.from(urls).map((url) => `<img class="event__photo" src=${url} alt="Event photo">`).join(``)}
+        </div>
+      </div>
+    </section>
+  </section>
+  </form>`;
+
+const createFormTemplate = (events, options) =>
   `<form class="trip-events__item  event  event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
@@ -65,30 +94,26 @@ export const createFormTemplate = (events, options) =>
   }).join(``)}
 </form>`;
 
-const getEditEventTemplate = ({description, offers, urls}, options) =>
-  `<form class="trip-events__item  event  event--edit" action="#" method="post">
-  <section class="event__details">
-    <section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-      <div class="event__available-offers">
-      ${options.map((option) =>`<div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${option.id}-1" type="checkbox" name="event-offer-${option.id}" ${(Array.from(offers).filter((offer) => offer.option === option.option)).length > 0 ? `checked` : ``}>
-          <label class="event__offer-label" for="event-offer-${option.id}-1">
-            <span class="event__offer-title">${option.option}</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
-          </label>
-        </div>`).join(``)}
-      </div>
-    </section>
-    <section class="event__section  event__section--destination">
-      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${Array.from(description)}</p>
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
-        ${Array.from(urls).map((url) => `<img class="event__photo" src=${url} alt="Event photo">`).join(``)}
-        </div>
-      </div>
-    </section>
-  </section>
-  </form>`;
+export default class Form {
+  constructor(events, options) {
+    this._events = events;
+    this._options = options;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFormTemplate(this._events, this._options);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

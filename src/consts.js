@@ -6,8 +6,8 @@ import {
   getRandomDate,
 } from "./utils.js";
 
-const DAYS_COUNT = 5;
-const TASK_COUNT = 10;
+const DAYS_COUNT = 2;
+const TRIP_COUNT = 3;
 
 export const CITIES = [
   `Amsterdam`,
@@ -17,6 +17,17 @@ export const CITIES = [
   `Paris`,
   `Moscow`,
   `Barcelona`,
+];
+
+export const filterNames = [{
+  name: `Everything`,
+},
+{
+  name: `Future`,
+},
+{
+  name: `Past`,
+},
 ];
 
 export const TYPES_OF_TRANSFER = [
@@ -109,18 +120,24 @@ export const getEventsData = (count) => {
   return events.fill(``).map(getEvent).sort((a, b) => a.start - b.start);
 };
 
-export const eventsData = getEventsData(TASK_COUNT);
+export const eventsInfo = getEventsData(TRIP_COUNT);
 
 export const getCities = () => {
-  return eventsData.map((event) => event.city);
+  return eventsInfo.map((event) => event.city);
 };
 
 export const getDatesEnd = () => {
-  return eventsData.map((event) => new Date(event.end));
+  return eventsInfo.map((event) => new Date(event.end));
 };
 
 export const getDatesStart = () => {
-  return eventsData.map((event) => new Date(event.start));
+  return eventsInfo.map((event) => new Date(event.start));
 };
 
 export const tripDaysDates = new Set(getDatesStart().map((date) => `${date}`.slice(4, 10)));
+
+export const getUniqDates = (eventsData) => {
+  return Array.from(new Set(eventsData.map((eventData) => eventData.date)));
+};
+
+

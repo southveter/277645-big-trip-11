@@ -1,4 +1,6 @@
-export const getPointTemplate = ({type, city, price, start, end, hours, minutes, offers}) =>
+import {createElement} from "../utils.js";
+
+const createPointTemplate = ({type, city, price, start, end, hours, minutes, offers}) =>
   `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
@@ -29,3 +31,33 @@ export const getPointTemplate = ({type, city, price, start, end, hours, minutes,
         </button>
       </div>
     </li>`;
+
+export default class Point {
+  constructor(type, city, price, start, end, hours, minutes, offers) {
+    this._type = type;
+    this._city = city;
+    this._price = price;
+    this._start = start;
+    this._end = end;
+    this._hours = hours;
+    this._minutes = minutes;
+    this._offers = offers;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPointTemplate(this._type, this._city, this._price, this._start, this._end, this._hours, this._minutes, this._offers, this._element);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

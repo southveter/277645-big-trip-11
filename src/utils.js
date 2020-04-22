@@ -1,3 +1,5 @@
+// import {RenderPosition} from "./consts.js";
+
 const TIME_IN_MS = 60 * 60 * 24 * 1000;
 
 export const getRandomDate = (days) => {
@@ -29,4 +31,27 @@ export const getRandomImgUrlArray = (min, max) => {
     newArray.push(`http://picsum.photos/248/152?r=${Math.random()}`);
   }
   return newArray;
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
