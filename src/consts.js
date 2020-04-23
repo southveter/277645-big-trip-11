@@ -1,143 +1,90 @@
-import {
-  getRandomElement,
-  getRandomArray,
-  getRandomImgUrlArray,
-  getRandomInteger,
-  getRandomDate,
-} from "./utils.js";
+export const EVENTS_AMOUNT = 15;
+export const NUMBER_WEEK_DAYS = 7;
+export const NUMBER_HOURS = 24;
+export const TIME_FORMAT = 1000;
+export const MINUTE_NUMBERS = 60;
 
-const DAYS_COUNT = 2;
-const TRIP_COUNT = 3;
+export const CONTROL_NAMES = [`Table`, `Stats`];
+
+export const FILTER_NAMES = [
+  `everything`,
+  `future`,
+  `past`
+];
+
+export const SORT_OPTIONS = [
+  {
+    name: `event`,
+    isChecked: true
+  },
+  {
+    name: `time`,
+    isChecked: false
+  },
+  {
+    name: `price`,
+    isChecked: false
+  }
+];
+
+export const TYPES = [
+  [
+    `Taxi`,
+    `Bus`,
+    `Train`,
+    `Ship`,
+    `Transport`,
+    `Drive`,
+    `Flight`
+  ],
+  [
+    `Check-in`,
+    `Sightseeing`,
+    `Restaurant`
+  ]
+];
 
 export const CITIES = [
   `Amsterdam`,
-  `Chamonix`,
   `Geneva`,
+  `Chamonix`,
   `Berlin`,
-  `Paris`,
   `Moscow`,
-  `Barcelona`,
 ];
 
-export const filterNames = [{
-  name: `Everything`,
-},
-{
-  name: `Future`,
-},
-{
-  name: `Past`,
-},
+export const SERVICES = [
+  {
+    type: `luggage`,
+    title: `Add luggage`,
+    price: 30
+  },
+  {
+    type: `comfort`,
+    title: `Switch to comfort class`,
+    price: 100
+  },
+  {
+    type: `meal`,
+    title: `Add meal`,
+    price: 15
+  },
+  {
+    type: `seats`,
+    title: `Choose seats`,
+    price: 5
+  }
 ];
 
-export const TYPES_OF_TRANSFER = [
-  `Taxi to`,
-  `Bus to`,
-  `Train to`,
-  `Ship to`,
-  `Transport to`,
-  `Drive to`,
-  `Flight to`,
-];
-
-export const TYPES_OF_ACTIVITY = [
-  `Check-in in`,
-  `Sightseeing in`,
-  `Restaurant in`,
-];
-const TYPES_OF_EVENT = TYPES_OF_TRANSFER.concat(TYPES_OF_ACTIVITY);
-
-const DESCRIPTIONS = [
+export const DESCRIPTIONS = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
   `Aliquam id orci ut lectus varius viverra.`,
   `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
+  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
+  `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
+  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
+  `Aliquam erat volutpat.`,
+  `Nunc fermentum tortor ac porta dapibus.`,
+  `In rutrum ac purus sit amet tempus.`
 ];
-
-export const OPTIONS = [{
-  option: `luggage`,
-  title: `Add luggage`,
-  price: 30
-},
-{
-  option: `comfort`,
-  title: `Switch to comfort class`,
-  price: 100
-},
-{
-  option: `meal`,
-  title: `Add meal`,
-  price: 15
-},
-{
-  option: `seats`,
-  title: `Choose seats`,
-  price: 5
-},
-{
-  option: `train`,
-  title: `Travel by train`,
-  price: 40
-},
-];
-
-export const menuValues = [
-  {
-    title: `Table`,
-    active: true
-  },
-  {
-    title: `Stats`,
-    active: false
-  },
-];
-
-const getEvent = () => {
-  const type = getRandomElement(TYPES_OF_EVENT);
-  const start = getRandomDate(DAYS_COUNT);
-  const residual = getRandomInteger(20, 180) * 60 * 1000;
-  const residualInHours = residual / 1000 / 60 / 60;
-  const hours = Math.trunc(residualInHours);
-  const minutes = Math.trunc((residualInHours - hours) * 60);
-  return {
-    type,
-    city: getRandomElement(CITIES),
-    price: getRandomInteger(0, 1000),
-    description: new Set(getRandomArray(1, 3, DESCRIPTIONS)),
-    start,
-    end: start + residual,
-    hours,
-    minutes,
-    offers: new Set(getRandomArray(1, 4, OPTIONS)),
-    urls: new Set(getRandomImgUrlArray(0, 5)),
-  };
-
-};
-
-export const getEventsData = (count) => {
-  const events = new Array(count);
-  return events.fill(``).map(getEvent).sort((a, b) => a.start - b.start);
-};
-
-export const eventsInfo = getEventsData(TRIP_COUNT);
-
-export const getCities = () => {
-  return eventsInfo.map((event) => event.city);
-};
-
-export const getDatesEnd = () => {
-  return eventsInfo.map((event) => new Date(event.end));
-};
-
-export const getDatesStart = () => {
-  return eventsInfo.map((event) => new Date(event.start));
-};
-
-export const tripDaysDates = new Set(getDatesStart().map((date) => `${date}`.slice(4, 10)));
-
-export const getUniqDates = (eventsData) => {
-  return Array.from(new Set(eventsData.map((eventData) => eventData.date)));
-};
-
-

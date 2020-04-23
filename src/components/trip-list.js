@@ -1,19 +1,16 @@
 import {createElement} from "../utils.js";
 
-const createPointListTemplate = () => {
-  return (
-    `<ul class="trip-events__list">
-    </ul>`
-  );
+const createTripListTemplate = () => {
+  return (`<ul class="trip-days"></ul>`);
 };
 
-export default class PointList {
+export default class TripList {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createPointListTemplate();
+    return createTripListTemplate();
   }
 
   getElement() {
