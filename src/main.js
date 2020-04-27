@@ -15,12 +15,12 @@ import {
   cardsList,
   datesList,
   citiesList
-} from './utils.js';
+} from './utils';
 import {
   CONTROL_NAMES,
   FILTER_NAMES,
   SORT_OPTIONS,
-} from './consts.js';
+} from './consts';
 
 const tripMain = document.querySelector(`.trip-main`);
 renderElement(tripMain, new TripInfo().getElement(), RenderPosition.AFTERBEGIN);
