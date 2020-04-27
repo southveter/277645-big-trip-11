@@ -1,5 +1,5 @@
-import {formatDate, formatTime, createElement} from "../utils.js";
-import {CITIES, TYPES} from "../consts.js";
+import {formatDate, formatTime} from '../../utils';
+import {CITIES, TYPES} from '../../consts';
 
 const getTypeTransport = (typesTransport) => {
   return typesTransport.map((typeTransport) => {
@@ -50,7 +50,7 @@ const getCities = (citiesName) => {
   }).join(``);
 };
 
-const createEditEventTemplate = (cardData) => {
+export const createEditEventTemplate = (cardData) => {
 
   const {type, city, photos, description, services, start, end, price} = cardData;
   const startDate = formatDate(new Date(start), false);
@@ -136,28 +136,3 @@ const createEditEventTemplate = (cardData) => {
       </form>`
   );
 };
-
-export default class EditEvent {
-  constructor(cardData) {
-    this._cardData = cardData;
-    this._element = null;
-  }
-
-  getTemplate() {
-    return createEditEventTemplate(this._cardData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-}
-
-

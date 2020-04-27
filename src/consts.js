@@ -1,15 +1,33 @@
-export const EVENTS_AMOUNT = 15;
+export const EVENTS_AMOUNT = 10;
 export const NUMBER_WEEK_DAYS = 7;
 export const NUMBER_HOURS = 24;
 export const TIME_FORMAT = 1000;
 export const MINUTE_NUMBERS = 60;
 
-export const CONTROL_NAMES = [`Table`, `Stats`];
+export const CONTROL_NAMES = [
+  {
+    title: `Table`,
+    isChecked: true
+  },
+  {
+    title: `Stats`,
+    isChecked: false
+  },
+];
 
 export const FILTER_NAMES = [
-  `everything`,
-  `future`,
-  `past`
+  {
+    title: `Everything`,
+    isChecked: true
+  },
+  {
+    title: `Future`,
+    isChecked: false
+  },
+  {
+    title: `Past`,
+    isChecked: false
+  },
 ];
 
 export const SORT_OPTIONS = [
@@ -60,7 +78,7 @@ export const SERVICES = [
   },
   {
     type: `comfort`,
-    title: `Switch to comfort class`,
+    title: `Switch to comfort`,
     price: 100
   },
   {

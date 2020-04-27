@@ -1,16 +1,13 @@
-import {createElement} from "../utils.js";
+import {createElement} from '../../utils';
+import {createTripInfoTemplate} from '@Components/trip-info/trip-info-tmpl';
 
-const createTripListTemplate = () => {
-  return (`<ul class="trip-days"></ul>`);
-};
-
-export default class TripList {
+export default class TripInfo {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createTripListTemplate();
+    return createTripInfoTemplate();
   }
 
   getElement() {
