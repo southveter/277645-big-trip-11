@@ -1,12 +1,5 @@
-import {createElement} from "../utils.js";
-
-const createTripCostTemplate = (cards) => {
-  return (
-    `<p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">${cards.map((card) => card.price).reduce((sum, current) => sum + current, 0)}</span>
-    </p>`
-  );
-};
+import {createElement} from '../../utils';
+import {createTripCostTemplate} from '@Components/trip-cost/trip-cost-tmpl';
 
 export default class TripCost {
   constructor(cards) {

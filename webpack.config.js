@@ -11,5 +11,10 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'public'),
     watchContentBase: true,
-  }
+  },
+  resolve: {
+    alias: {
+      '@Components': path.resolve(__dirname, './src/components/')
+    }
+  },
 };
