@@ -1,4 +1,4 @@
-import {formatDate, formatTime} from '../../utils';
+import {formatDate, formatTime} from '../../utils/common';
 import {CITIES, TYPES} from '../../consts';
 
 const getTypeTransport = (typesTransport) => {

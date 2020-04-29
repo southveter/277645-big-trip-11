@@ -1,4 +1,4 @@
-import {formatDate, formatTime, getDuration} from '../../utils';
+import {formatDate, formatTime, getDuration} from '../../utils/common';
 
 const getServices = (services) => {
   return services.map((service) => {

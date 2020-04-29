@@ -1,24 +1,8 @@
-import {createElement} from '../../utils';
+import Abstract from '@Components/abstract/abstract';
 import {createNoEventsTemplate} from '@Components/no-events/no-events-tmpl';
 
-export default class NoEvents {
-  constructor() {
-    this._element = null;
-  }
-
+export default class NoEvents extends Abstract {
   getTemplate() {
-    return createNoEventsTemplate(this._cardData);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createNoEventsTemplate();
   }
 }
