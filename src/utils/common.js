@@ -8,7 +8,7 @@ import {
   CITIES,
   SERVICES,
   DESCRIPTIONS
-} from "./consts.js";
+} from "../consts.js";
 
 const getRandomPhotos = () => {
   const photos = [];
@@ -113,29 +113,6 @@ export const formatTime = (hours, minutes) => {
 
 export const getDuration = (time) => {
   return time.getHours() * MINUTES_PER_HOUR + time.getMinutes();
-};
-
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
-
-export const createElement = (template) => {
-  const element = document.createElement(`div`);
-  element.innerHTML = template;
-
-  return element.firstChild;
-};
-
-export const renderElement = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
 };
 
 export const citiesList = [

@@ -1,25 +1,13 @@
-import {createElement} from '../../utils';
+import Abstract from '@Components/abstract/abstract';
 import {createTripFilterTemplate} from '@Components/trip-filter/trip-filter-tmpl';
 
-export default class TripFilter {
+export default class TripFilter extends Abstract {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripFilterTemplate(this._filters);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

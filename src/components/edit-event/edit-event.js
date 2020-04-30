@@ -1,27 +1,21 @@
-import {createElement} from '../../utils';
+import Abstract from '@Components/abstract/abstract';
 import {createEditEventTemplate} from '@Components/edit-event/edit-event-tmpl';
 
-export default class EditEvent {
+export default class EditEvent extends Abstract {
   constructor(cardData) {
+    super();
     this._cardData = cardData;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditEventTemplate(this._cardData);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  setSubmitHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
   }
 
-  removeElement() {
-    this._element = null;
+  setCloseHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }
-
-

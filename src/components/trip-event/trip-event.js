@@ -1,25 +1,17 @@
-import {createElement} from '../../utils';
+import Abstract from '@Components/abstract/abstract';
 import {createTripEventTemplate} from '@Components/trip-event/trip-event-tmpl';
 
-export default class TripEvent {
+export default class TripEvent extends Abstract {
   constructor(cardData) {
+    super();
     this._cardData = cardData;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripEventTemplate(this._cardData);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }
