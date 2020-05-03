@@ -1,4 +1,4 @@
-import Abstract from '@Components/abstract/abstract';
+import Abstract from '@Components/abstract';
 import {createEditEventTemplate} from '@Components/edit-event/edit-event-tmpl';
 
 export default class EditEvent extends Abstract {

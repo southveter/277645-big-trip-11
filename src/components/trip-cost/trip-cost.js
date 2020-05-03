@@ -1,4 +1,4 @@
-import Abstract from '@Components/abstract/abstract';
+import Abstract from '@Components/abstract';
 import {createTripCostTemplate} from '@Components/trip-cost/trip-cost-tmpl';
 
 export default class TripCost extends Abstract {

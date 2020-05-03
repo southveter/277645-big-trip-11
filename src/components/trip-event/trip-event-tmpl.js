@@ -1,4 +1,4 @@
-import {formatDate, formatTime, getDuration} from '../../utils/common';
+import {formatDate, formatTime, millisecondsToHm} from '../../utils/common';
 
 const getServices = (services) => {
   return services.map((service) => {
@@ -19,8 +19,7 @@ export const createTripEventTemplate = (cardData) => {
   const endDate = formatDate(new Date(end), true);
   const startTime = formatTime(new Date(start).getHours(), new Date(start).getMinutes());
   const endTime = formatTime(new Date(end).getHours(), new Date(end).getMinutes());
-  const difTime = new Date(end - start);
-  const durationTime = getDuration(difTime);
+  const durationTime = millisecondsToHm(end - start);
   const servicesList = getServices(services);
 
   return (
@@ -36,7 +35,7 @@ export const createTripEventTemplate = (cardData) => {
           &mdash;
           <time class="event__end-time" datetime="${endDate}T${endTime}">${endTime}</time>
           </p>
-          <p class="event__duration">${durationTime}M</p>
+          <p class="event__duration">${durationTime}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>

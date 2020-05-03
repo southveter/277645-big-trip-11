@@ -106,3 +106,24 @@ export const DESCRIPTIONS = [
   `Nunc fermentum tortor ac porta dapibus.`,
   `In rutrum ac purus sit amet tempus.`
 ];
+
+export const MONTHS = [
+  `JAN`,
+  `FEB`,
+  `MAR`,
+  `APR`,
+  `MAY`,
+  `JUN`,
+  `JUL`,
+  `AUG`,
+  `SEP`,
+  `OCT`,
+  `NOV`,
+  `DEC`
+];
+
+export const SORT_TYPE = {
+  EVENT: `event`,
+  TIME: `time`,
+  PRICE: `price`,
+};

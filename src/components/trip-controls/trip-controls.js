@@ -1,4 +1,4 @@
-import Abstract from '@Components/abstract/abstract';
+import Abstract from '@Components/abstract';
 import {createTripControlsTemplate} from '@Components/trip-controls/trip-controls-tmpl';
 
 

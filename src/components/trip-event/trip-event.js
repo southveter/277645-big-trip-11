@@ -1,4 +1,4 @@
-import Abstract from '@Components/abstract/abstract';
+import Abstract from '@Components/abstract';
 import {createTripEventTemplate} from '@Components/trip-event/trip-event-tmpl';
 
 export default class TripEvent extends Abstract {
