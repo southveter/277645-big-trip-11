@@ -3,7 +3,7 @@ import TripCost from '@Components/trip-cost/trip-cost';
 import TripFilter from '@Components/trip-filter/trip-filter';
 import TripInfo from '@Components/trip-info/trip-info';
 import TripControls from '@Components/trip-controls/trip-controls';
-import TripController from './trip-controller/trip-controller';
+import TripController from './controllers/trip-controller';
 import {
   renderElement,
   RenderPosition,
