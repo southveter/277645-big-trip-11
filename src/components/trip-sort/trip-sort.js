@@ -1,11 +1,11 @@
-import Abstract from '@Components/abstract';
-import {createTripSortTemplate} from '@Components/trip-sort/trip-sort-tmpl';
+import Abstract from '@components/abstract';
+import {createTripSortTemplate} from '@components/trip-sort/trip-sort-tmpl';
 import {SORT_TYPE} from '../../consts';
 
 export default class TripSort extends Abstract {
   constructor() {
     super();
-    this._currenSortType = SORT_TYPE.EVENT;
+    this._currentSortType = SORT_TYPE.EVENT;
   }
 
   getTemplate() {
@@ -13,7 +13,7 @@ export default class TripSort extends Abstract {
   }
 
   getSortType() {
-    return this._currenSortType;
+    return this._currentSortType;
   }
 
   setSortTypeChangeHandler(handler) {
@@ -31,13 +31,7 @@ export default class TripSort extends Abstract {
       }
 
       this._currentSortType = sortType;
-      this.refreshElement();
       handler(this._currentSortType);
     });
-  }
-
-  refreshElement() {
-    this._element.innerHTML = ``;
-    this._element.innerHTML = this.getTemplate();
   }
 }

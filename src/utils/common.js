@@ -8,9 +8,9 @@ import {
   CITIES,
   SERVICES,
   DESCRIPTIONS
-} from "../consts.js";
+} from '../consts';
 
-const getRandomPhotos = () => {
+export const getRandomPhotos = () => {
   const photos = [];
 
   for (let i = 0; i < getRandomIntegerNumber(1, 5); i++) {
@@ -20,7 +20,7 @@ const getRandomPhotos = () => {
   return photos;
 };
 
-const getRandomDescription = () => {
+export const getRandomDescription = () => {
   return DESCRIPTIONS
     .filter(() => Math.random() > 0.5)
     .slice(0, getRandomIntegerNumber(1, 3))
@@ -28,7 +28,7 @@ const getRandomDescription = () => {
     .trim();
 };
 
-const getRandomServices = () => {
+export const getRandomServices = () => {
   const currentServices = [];
 
   for (let i = 0; i < getRandomIntegerNumber(0, 4); i++) {
@@ -109,7 +109,9 @@ export const formatTime = (hours, minutes) => {
   return `${hours}:${(`0` + minutes).slice(-2)}`;
 };
 
-// export const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+export const isEscKey = (evt) => {
+  return evt.key === `Escape` || evt.key === `Esc`;
+};
 
 const MINUTES_PER_HOUR = 60;
 

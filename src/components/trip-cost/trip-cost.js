@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripCostTemplate} from '@Components/trip-cost/trip-cost-tmpl';
+import Abstract from '@components/abstract';
+import {createTripCostTemplate} from '@components/trip-cost/trip-cost-tmpl';
 
 export default class TripCost extends Abstract {
   constructor(cards) {
