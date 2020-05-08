@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripDayTemplate} from '@Components/trip-day/trip-day-tmpl';
+import Abstract from '@components/abstract';
+import {createTripDayTemplate} from '@components/trip-day/trip-day-tmpl';
 
 export default class TripDay extends Abstract {
   constructor(day, index) {

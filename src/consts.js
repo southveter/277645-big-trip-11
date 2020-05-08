@@ -47,18 +47,18 @@ export const SORT_OPTIONS = [
 
 export const TYPES = [
   [
-    `Taxi`,
-    `Bus`,
-    `Train`,
-    `Ship`,
-    `Transport`,
-    `Drive`,
-    `Flight`
+    `Taxi to`,
+    `Bus to`,
+    `Train to`,
+    `Ship to`,
+    `Transport to`,
+    `Drive to`,
+    `Flight to`
   ],
   [
-    `Check-in`,
-    `Sightseeing`,
-    `Restaurant`
+    `Check-in in`,
+    `Sightseeing in`,
+    `Restaurant in`
   ]
 ];
 
@@ -126,4 +126,22 @@ export const SORT_TYPE = {
   EVENT: `event`,
   TIME: `time`,
   PRICE: `price`,
+};
+
+export const actionType = new Map([
+  [`taxi`, `Taxi to`],
+  [`bus`, `Bus to`],
+  [`train`, `Train to`],
+  [`ship`, `Ship to`],
+  [`transport`, `Transport to`],
+  [`drive`, `Drive to`],
+  [`flight`, `Flight to`],
+  [`check-in`, `Check-in in`],
+  [`sightseeing`, `Sightseeing in`],
+  [`restaurant`, `Restaurant in`]
+]);
+
+export const MODE = {
+  DEFAULT: `default`,
+  EDIT: `edit`,
 };

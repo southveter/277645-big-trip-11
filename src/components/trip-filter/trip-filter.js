@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripFilterTemplate} from '@Components/trip-filter/trip-filter-tmpl';
+import Abstract from '@components/abstract';
+import {createTripFilterTemplate} from '@components/trip-filter/trip-filter-tmpl';
 
 export default class TripFilter extends Abstract {
   constructor(filters) {

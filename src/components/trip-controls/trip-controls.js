@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripControlsTemplate} from '@Components/trip-controls/trip-controls-tmpl';
+import Abstract from '@components/abstract';
+import {createTripControlsTemplate} from '@components/trip-controls/trip-controls-tmpl';
 
 
 export default class TripControls extends Abstract {

@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripRouteTemplate} from '@Components/trip-route/trip-route-tmpl';
+import Abstract from '@components/abstract';
+import {createTripRouteTemplate} from '@components/trip-route/trip-route-tmpl';
 
 export default class TripRoute extends Abstract {
   constructor(cities, dates) {

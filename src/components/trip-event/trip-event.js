@@ -1,5 +1,5 @@
-import Abstract from '@Components/abstract';
-import {createTripEventTemplate} from '@Components/trip-event/trip-event-tmpl';
+import Abstract from '@components/abstract';
+import {createTripEventTemplate} from '@components/trip-event/trip-event-tmpl';
 
 export default class TripEvent extends Abstract {
   constructor(cardData) {
