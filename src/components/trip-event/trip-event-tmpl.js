@@ -1,4 +1,5 @@
-import {formatDate, formatTime, millisecondsToHm} from '../../utils/common';
+import {getDurationTime} from '../../utils/common';
+import moment from 'moment';
 
 const getServices = (services) => {
   return services.map((service) => {
@@ -15,11 +16,11 @@ const getServices = (services) => {
 export const createTripEventTemplate = (cardData) => {
 
   const {type, price, city, start, end, services} = cardData;
-  const startDate = formatDate(new Date(start), true);
-  const endDate = formatDate(new Date(end), true);
-  const startTime = formatTime(new Date(start).getHours(), new Date(start).getMinutes());
-  const endTime = formatTime(new Date(end).getHours(), new Date(end).getMinutes());
-  const durationTime = millisecondsToHm(end - start);
+  const startDate = moment(start).format(`YYYY-MM-DDThh:mm:ss`);
+  const endDate = moment(end).format(`YYYY-MM-DDThh:mm:ss`);
+  const startTime = moment(start).format(`HH:mm`);
+  const endTime = moment(end).format(`HH:mm`);
+  const durationTime = getDurationTime(end - start);
   const servicesList = getServices(services);
 
   return (
@@ -31,9 +32,9 @@ export const createTripEventTemplate = (cardData) => {
         <h3 class="event__title">${type} ${city}</h3>
         <div class="event__schedule">
           <p class="event__time">
-          <time class="event__start-time" datetime="${startDate}T${startTime}">${startTime}</time>
+          <time class="event__start-time" datetime="${startDate}">${startTime}</time>
           &mdash;
-          <time class="event__end-time" datetime="${endDate}T${endTime}">${endTime}</time>
+          <time class="event__end-time" datetime="${endDate}">${endTime}</time>
           </p>
           <p class="event__duration">${durationTime}</p>
         </div>

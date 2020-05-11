@@ -49,9 +49,8 @@ export default class PointController {
     if (oldEventComponent && oldEventEditComponent) {
       replace(this._eventComponent, oldEventComponent);
       replace(this._eventEditComponent, oldEventEditComponent);
-    } else {
-      render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
     }
+    render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
   }
 
   setDefaultView() {
@@ -72,7 +71,6 @@ export default class PointController {
   }
 
   _onEscKeyDown(evt) {
-    // const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey(evt)) {
       this._replaceEditToTask();

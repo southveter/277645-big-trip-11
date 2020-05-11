@@ -20,9 +20,9 @@ const getSortedEvents = (events, sortType, from, to) => {
     case SORT_TYPE.EVENT:
       sortedEvents = showingEvents;
       break;
-    // default:
-    //   sortedEvents.slice(from, to);
-    //   break;
+    default:
+      sortedEvents.slice(from, to);
+      break;
   }
   return sortedEvents.slice(from, to);
 };

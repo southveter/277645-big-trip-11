@@ -2,6 +2,8 @@ import AbstractSmart from '@components/abstract-smart';
 import {createEditEventTemplate} from '@components/edit-event/edit-event-tmpl';
 import {getRandomDescription, getRandomPhotos, getRandomServices} from '../../utils/common';
 import {actionType} from '../../consts';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 
 export default class EditEvent extends AbstractSmart {
@@ -13,6 +15,9 @@ export default class EditEvent extends AbstractSmart {
     this._description = cardData.description;
     this._photos = cardData.photos;
     this._services = cardData.services;
+    this._flatpickrStartDate = null;
+    this._flatpickrEndDate = null;
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -24,6 +29,12 @@ export default class EditEvent extends AbstractSmart {
       services: this._services,
       photos: this._photos
     });
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
   }
 
   recoveryListeners() {
@@ -72,5 +83,26 @@ export default class EditEvent extends AbstractSmart {
 
       this.rerender();
     });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    const element = this.getElement();
+    const options = {
+      allowInput: true,
+      dateFormat: `d/m/y H:i`,
+      minDate: this._cardData.start,
+      enableTime: true
+    };
+
+    this._flatpickrStartDate = flatpickr(element.querySelector(`#event-start-time-1`), Object.assign({}, options, {defaultDate: this._cardData.start}));
+
+    this._flatpickrEndDate = flatpickr(element.querySelector(`#event-end-time-1`), Object.assign({}, options, {defaultDate: this._cardData.end}));
   }
 }

@@ -1,5 +1,5 @@
-import {formatDate, formatTime} from '../../utils/common';
 import {CITIES, TYPES} from '../../consts';
+import moment from 'moment';
 
 
 const getTypeTransport = (typesTransport) => {
@@ -55,10 +55,8 @@ export const createEditEventTemplate = (cardData, options) => {
 
   const {start, end, price, isFavourite, index} = cardData;
   const {type, city, description, photos, services} = options;
-  const startDate = formatDate(new Date(start), false);
-  const endDate = formatDate(new Date(end), false);
-  const startTime = formatTime(new Date(start).getHours(), new Date(start).getMinutes());
-  const endTime = formatTime(new Date(end).getHours(), new Date(end).getMinutes());
+  const startDate = moment(start).format(`DD/MM/YY HH:mm`);
+  const endDate = moment(end).format(`DD/MM/YY HH:mm`);
   const typeTransport = getTypeTransport(TYPES[0]);
   const typeActivity = getTypeActivity(TYPES[1]);
   const servicesList = getServices(services);
@@ -96,15 +94,15 @@ export const createEditEventTemplate = (cardData, options) => {
           </datalist>
         </div>
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-${index}">
+          <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate} ${startTime}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate}">
           &mdash;
-          <label class="visually-hidden" for="event-end-time-${index}">
+          <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDate} ${endTime}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDate}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-${index}">

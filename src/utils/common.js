@@ -10,6 +10,8 @@ import {
   DESCRIPTIONS
 } from '../consts';
 
+const MINUTES_PER_HOUR = 60;
+
 export const getRandomPhotos = () => {
   const photos = [];
 
@@ -93,46 +95,28 @@ const generateEvents = (count) => {
 
 export const cardsList = generateEvents(EVENTS_AMOUNT);
 
+export const citiesList = [
+  ...new Set(cardsList.map((elem) => elem.city))
+];
+
 export const datesList = [
   ...new Set(cardsList.map((elem) => new Date(elem.start).toDateString()))
 ];
-
-export const formatDate = (date, isLong) => {
-  const dateYear = date.getFullYear();
-  const dateMonth = (`0` + date.getMonth()).slice(-2);
-  const dateDay = (`0` + date.getDate()).slice(-2);
-
-  return isLong ? `${dateYear}-${dateMonth}-${dateDay}` : `${dateDay}/${dateMonth}/${dateYear.toString().slice(-2)}`;
-};
-
-export const formatTime = (hours, minutes) => {
-  return `${hours}:${(`0` + minutes).slice(-2)}`;
-};
 
 export const isEscKey = (evt) => {
   return evt.key === `Escape` || evt.key === `Esc`;
 };
 
-const MINUTES_PER_HOUR = 60;
+export const getDurationTime = (timeInMs) => {
+  const days = Math.floor(timeInMs / (1000 * MINUTES_PER_HOUR * MINUTES_PER_HOUR * 24)).toString().padStart(2, `0`);
+  const hours = (Math.floor(timeInMs / (1000 * MINUTES_PER_HOUR * MINUTES_PER_HOUR)) % 24).toString().padStart(2, `0`);
+  const minutes = (Math.floor(timeInMs / (1000 * MINUTES_PER_HOUR)) % MINUTES_PER_HOUR).toString().padStart(2, `0`);
+  const modifiedDays = days > 0 ? `${days}D ` : ``;
+  let modifiedHours = `${hours}H `;
 
-const millisecondsToHours = (timeInMs) => Math.floor((timeInMs / (1000 * MINUTES_PER_HOUR * MINUTES_PER_HOUR)) % 24);
+  if (days === 0) {
+    modifiedHours = hours > 0 ? `${hours}H ` : ``;
+  }
 
-const millisecondsToMinutes = (timeInMs) => Math.floor((timeInMs / (1000 * MINUTES_PER_HOUR)) % MINUTES_PER_HOUR);
-
-export const millisecondsToHm = (timeInMs) => {
-  const hours = millisecondsToHours(timeInMs);
-  const minutes = millisecondsToMinutes(timeInMs);
-
-  return `${hours}H ${minutes}M`;
+  return `${modifiedDays}${modifiedHours}${minutes}M`;
 };
-
-export const getDuration = (dif) => {
-  const difInHours = Number(millisecondsToHours(dif));
-  const difInMinutes = Number(millisecondsToMinutes(dif));
-
-  return difInHours * MINUTES_PER_HOUR + difInMinutes;
-};
-
-export const citiesList = [
-  ...new Set(cardsList.map((elem) => elem.city))
-];
