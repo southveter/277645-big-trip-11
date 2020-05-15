@@ -6,12 +6,10 @@ export const MINUTE_NUMBERS = 60;
 
 export const CONTROL_NAMES = [
   {
-    title: `Table`,
-    isChecked: true
+    name: `Table`,
   },
   {
-    title: `Stats`,
-    isChecked: false
+    name: `Stats`,
   },
 ];
 
@@ -30,37 +28,45 @@ export const FILTER_NAMES = [
   },
 ];
 
-export const SORT_OPTIONS = [
-  {
-    name: `event`,
-    isChecked: true
-  },
-  {
-    name: `time`,
-    isChecked: false
-  },
-  {
-    name: `price`,
-    isChecked: false
-  }
+export const FILTER_TYPE = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};
+
+export const TRAVEL_TRANSPORT = [
+  `taxi`,
+  `bus`,
+  `train`,
+  `ship`,
+  `transport`,
+  `drive`,
+  `flight`
 ];
 
-export const TYPES = [
-  [
-    `Taxi to`,
-    `Bus to`,
-    `Train to`,
-    `Ship to`,
-    `Transport to`,
-    `Drive to`,
-    `Flight to`
-  ],
-  [
-    `Check-in in`,
-    `Sightseeing in`,
-    `Restaurant in`
-  ]
+export const TRAVEL_ACTIVITY = [
+  `check-in`,
+  `sightseeing`,
+  `restaurant`
 ];
+
+export const Placeholder = {
+  TRANSPORT: `to`,
+  ACTION: `in`,
+};
+
+export const EVENT_TYPE = {
+  TAXI: `taxi`,
+  BUS: `bus`,
+  TRAIN: `train`,
+  SHIP: `ship`,
+  TRANSPORT: `transport`,
+  DRIVE: `drive`,
+  FLIGHT: `flight`,
+  CHECK_IN: `check-in`,
+  SIGHTSEEING: `sightseeing`,
+  RESTAURANT: `restaurant`,
+};
 
 export const CITIES = [
   `Amsterdam`,
@@ -107,20 +113,6 @@ export const DESCRIPTIONS = [
   `In rutrum ac purus sit amet tempus.`
 ];
 
-export const MONTHS = [
-  `JAN`,
-  `FEB`,
-  `MAR`,
-  `APR`,
-  `MAY`,
-  `JUN`,
-  `JUL`,
-  `AUG`,
-  `SEP`,
-  `OCT`,
-  `NOV`,
-  `DEC`
-];
 
 export const SORT_TYPE = {
   EVENT: `event`,
@@ -142,6 +134,14 @@ export const actionType = new Map([
 ]);
 
 export const MODE = {
+  CREATING: `creating`,
   DEFAULT: `default`,
   EDIT: `edit`,
+};
+
+export const CURRENCY = `€`;
+
+export const TablItem = {
+  TABLE: `control-table`,
+  STATS: `control-stats`,
 };

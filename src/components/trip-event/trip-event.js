@@ -2,13 +2,13 @@ import Abstract from '@components/abstract';
 import {createTripEventTemplate} from '@components/trip-event/trip-event-tmpl';
 
 export default class TripEvent extends Abstract {
-  constructor(cardData) {
+  constructor(event) {
     super();
-    this._cardData = cardData;
+    this._event = event;
   }
 
   getTemplate() {
-    return createTripEventTemplate(this._cardData);
+    return createTripEventTemplate(this._event);
   }
 
   setClickHandler(handler) {

@@ -1,8 +1,10 @@
-export const createTripControlsTemplate = (names) => {
+export const createTripControlsTemplate = () => {
+
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
     <h2 class="visually-hidden">Switch trip view</h2>
-    ${names.map((name) => `<a class="trip-tabs__btn ${name.isChecked ? `trip-tabs__btn--active` : ``}" href="#">${name.title}</a>`).join(``)}
-    </nav>`
+    <a id="control-table" class="trip-tabs__btn" href="#">Table</a>
+    <a id="control-stats" class="trip-tabs__btn" href="#">Stats</a>
+  </nav>`
   );
 };

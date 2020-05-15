@@ -1,10 +1,13 @@
 import AbstractSmart from '@components/abstract-smart';
 import {createEditEventTemplate} from '@components/edit-event/edit-event-tmpl';
-import {getRandomDescription, getRandomPhotos, getRandomServices} from '../../utils/common';
-import {actionType} from '../../consts';
+import {getRandomDescription, getRandomPhotos, getRandomServices, getRandomCities} from '../../utils/common';
+import {CITIES} from '../../consts';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const isDestinationInCitiesList = (citiesList, destination) => {
+  return citiesList.some((city) => city === destination);
+};
 
 export default class EditEvent extends AbstractSmart {
   constructor(cardData) {
@@ -17,6 +20,10 @@ export default class EditEvent extends AbstractSmart {
     this._services = cardData.services;
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
+    this._deleteButtonClickHandler = null;
+    this._favoritesClickHandler = null;
+    this._submitHandler = null;
+    this._deleteButtonClickHandler = null;
     this._applyFlatpickr();
     this._subscribeOnEvents();
   }
@@ -31,18 +38,46 @@ export default class EditEvent extends AbstractSmart {
     });
   }
 
+  getData() {
+    const form = this.getElement();
+    return new FormData(form);
+  }
+
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+      this._clickHandler = null;
+    }
+    super.removeElement();
+  }
+
   rerender() {
     super.rerender();
-
     this._applyFlatpickr();
   }
+
 
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setFavoritesButtonClickHandler(this._favoritesClickHandler);
     this.setClickHandler(this._clickHandler);
-    this.setCloseHandler(this._closeHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
+  }
+
+  reset() {
+    const cardData = this._cardData;
+
+    this._type = cardData.type;
+    this._city = cardData.city;
+    this._description = cardData.description;
+    this._photos = cardData.photos;
+    this._services = cardData.services;
+
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
@@ -50,14 +85,17 @@ export default class EditEvent extends AbstractSmart {
     this._submitHandler = handler;
   }
 
-  setCloseHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._closeHandler = handler;
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
+    this._deleteButtonClickHandler = handler;
   }
 
   setClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._clickHandler = handler;
+    const editEventButton = this.getElement().querySelector(`.event__rollup-btn`);
+    if (editEventButton) {
+      editEventButton.addEventListener(`click`, handler);
+      this._clickHandler = handler;
+    }
   }
 
   setFavoritesButtonClickHandler(handler) {
@@ -68,20 +106,32 @@ export default class EditEvent extends AbstractSmart {
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+    const eventTypeButtons = element.querySelectorAll(`.event__type-input`);
+    const destinationInputs = element.querySelectorAll(`.event__input--destination`);
+    const submitButton = element.querySelector(`.event__save-btn`);
 
-      this._type = actionType.get(evt.target.value);
+    eventTypeButtons.forEach((button) => {
+      button.addEventListener(`click`, (evt) => {
+        const type = evt.target.value;
 
-      this.rerender();
+        this._type = type[0].toUpperCase() + type.slice(1);
+        this._offers = getRandomServices();
+        this._city = getRandomCities();
+        this._description = getRandomDescription();
+        this._photos = getRandomPhotos();
+
+        this.rerender();
+      });
     });
 
-    element.querySelector(`.event__input--destination`).addEventListener(`change`, (evt) => {
-      this._city = evt.target.value;
-      this._description = getRandomDescription();
-      this._photos = getRandomPhotos();
-      this._services = getRandomServices();
-
-      this.rerender();
+    destinationInputs.forEach((input) => {
+      input.addEventListener(`change`, () => {
+        if (!isDestinationInCitiesList(CITIES, input.value)) {
+          submitButton.disabled = true;
+        } else {
+          submitButton.disabled = false;
+        }
+      });
     });
   }
 
