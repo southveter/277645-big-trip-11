@@ -1,4 +1,4 @@
-import Abstract from './abstract.js';
+import Abstract from './abstract';
 
 export default class AbstractSmart extends Abstract {
   recoveryListeners() {
