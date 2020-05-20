@@ -2,13 +2,13 @@ import {TRAVEL_TRANSPORT, Placeholder} from '../../consts';
 import {getUpperCaseFirstLetter} from '../../utils/common';
 import moment from 'moment';
 
-const getServices = (services) => {
-  return services.map((service) => {
+const getOffers = (offers) => {
+  return offers.map((offer) => {
     return (`
         <li class="event__offer">
-          <span class="event__offer-title">${service.title}</span>
+          <span class="event__offer-title">${offer.title}</span>
           &plus;
-          &euro;&nbsp;<span class="event__offer-price">${service.price}</span>
+          &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
         </li>
         `);
   }).join(``);
@@ -16,15 +16,15 @@ const getServices = (services) => {
 
 export const createTripEventTemplate = (event) => {
 
-  const {type, city, price, services, startDate, endDate} = event;
-  const isArrive = !!services;
+  const {type, city, price, offers, startDate, endDate} = event;
+  const isArrive = !!offers;
   const duration = moment.duration(moment(endDate).diff(moment(startDate)));
   const startDateTime = moment(startDate).format(`YYYY-MM-DDThh:mm`);
   const endDateTime = moment(endDate).format(`YYYY-MM-DDThh:mm`);
   let days = duration.days();
   let hours = duration.hours();
   let minutes = duration.minutes();
-  const servicesList = getServices(services);
+  const servicesList = getOffers(offers);
 
   return (
     `<li class="trip-events__item">

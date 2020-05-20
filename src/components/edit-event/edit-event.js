@@ -1,23 +1,27 @@
 import AbstractSmart from '@components/abstract-smart';
 import {createEditEventTemplate} from '@components/edit-event/edit-event-tmpl';
-import {getRandomDescription, getRandomPhotos, getRandomServices, getRandomCities} from '../../utils/common';
-import {CITIES} from '../../consts';
+import {clearString} from '../../utils/common';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import Store from '../../models/store.js';
 
-const isDestinationInCitiesList = (citiesList, destination) => {
-  return citiesList.some((city) => city === destination);
+const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`,
 };
 
+
 export default class EditEvent extends AbstractSmart {
-  constructor(cardData) {
+  constructor(point) {
     super();
-    this._cardData = cardData;
-    this._type = cardData.type;
-    this._city = cardData.city;
-    this._description = cardData.description;
-    this._photos = cardData.photos;
-    this._services = cardData.services;
+    this._point = point;
+    this._type = point.type;
+    this._city = point.city;
+    this._price = point.price;
+    this._description = point.description;
+    this._offers = point.offers;
+    this._photos = point.photos;
+    this._externalData = DefaultData;
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
     this._deleteButtonClickHandler = null;
@@ -29,18 +33,29 @@ export default class EditEvent extends AbstractSmart {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._cardData, {
+    return createEditEventTemplate(this._point, {
       type: this._type,
       city: this._city,
       description: this._description,
-      services: this._services,
-      photos: this._photos
+      offers: this._offers,
+      photos: this._photos,
+      externalData: this._externalData
     });
   }
 
   getData() {
     const form = this.getElement();
     return new FormData(form);
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
+  }
+
+  rerender() {
+    super.rerender();
+    this._applyFlatpickr();
   }
 
   removeElement() {
@@ -54,12 +69,6 @@ export default class EditEvent extends AbstractSmart {
     super.removeElement();
   }
 
-  rerender() {
-    super.rerender();
-    this._applyFlatpickr();
-  }
-
-
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setFavoritesButtonClickHandler(this._favoritesClickHandler);
@@ -69,14 +78,9 @@ export default class EditEvent extends AbstractSmart {
   }
 
   reset() {
-    const cardData = this._cardData;
-
-    this._type = cardData.type;
-    this._city = cardData.city;
-    this._description = cardData.description;
-    this._photos = cardData.photos;
-    this._services = cardData.services;
-
+    const point = this._point;
+    this._type = point.type;
+    this._city = point.city;
     this.rerender();
   }
 
@@ -91,9 +95,9 @@ export default class EditEvent extends AbstractSmart {
   }
 
   setClickHandler(handler) {
-    const editEventButton = this.getElement().querySelector(`.event__rollup-btn`);
-    if (editEventButton) {
-      editEventButton.addEventListener(`click`, handler);
+    const element = this.getElement().querySelector(`.event__rollup-btn`);
+    if (element) {
+      element.addEventListener(`click`, handler);
       this._clickHandler = handler;
     }
   }
@@ -103,35 +107,42 @@ export default class EditEvent extends AbstractSmart {
     this._favoritesClickHandler = handler;
   }
 
+  disableForm() {
+    const form = this.getElement();
+    const elements = Array.from(form.elements);
+    elements.forEach((elm) => {
+      elm.readOnly = true;
+    });
+  }
+
+  activeForm() {
+    const form = this.getElement();
+    const elements = Array.from(form.elements);
+    elements.forEach((elm) => {
+      elm.readOnly = false;
+    });
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
 
-    const eventTypeButtons = element.querySelectorAll(`.event__type-input`);
-    const destinationInputs = element.querySelectorAll(`.event__input--destination`);
-    const submitButton = element.querySelector(`.event__save-btn`);
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+      this._type = evt.target.value;
+      this._offers = Store.getOffers().find((offer) => offer.type === this._type).offers;
 
-    eventTypeButtons.forEach((button) => {
-      button.addEventListener(`click`, (evt) => {
-        const type = evt.target.value;
-
-        this._type = type[0].toUpperCase() + type.slice(1);
-        this._offers = getRandomServices();
-        this._city = getRandomCities();
-        this._description = getRandomDescription();
-        this._photos = getRandomPhotos();
-
-        this.rerender();
-      });
+      this.rerender();
     });
 
-    destinationInputs.forEach((input) => {
-      input.addEventListener(`change`, () => {
-        if (!isDestinationInCitiesList(CITIES, input.value)) {
-          submitButton.disabled = true;
-        } else {
-          submitButton.disabled = false;
-        }
-      });
+    element.querySelector(`.event__input--destination`).addEventListener(`change`, (evt) => {
+      this._city = evt.target.value;
+      this._photos = Store.getDestinations().find((destination) => destination.name === this._city).pictures;
+      this._description = Store.getDestinations().find((destination) => destination.name === this._city).description;
+
+      this.rerender();
+    });
+
+    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+      evt.target.value = clearString(evt.target.value);
     });
   }
 
@@ -147,12 +158,12 @@ export default class EditEvent extends AbstractSmart {
     const options = {
       allowInput: true,
       dateFormat: `d/m/y H:i`,
-      minDate: this._cardData.start,
+      minDate: this._point.start,
       enableTime: true
     };
 
-    this._flatpickrStartDate = flatpickr(element.querySelector(`#event-start-time-1`), Object.assign({}, options, {defaultDate: this._cardData.start}));
+    this._flatpickrStartDate = flatpickr(element.querySelector(`#event-start-time-1`), Object.assign({}, options, {defaultDate: this._point.start}));
 
-    this._flatpickrEndDate = flatpickr(element.querySelector(`#event-end-time-1`), Object.assign({}, options, {defaultDate: this._cardData.end}));
+    this._flatpickrEndDate = flatpickr(element.querySelector(`#event-end-time-1`), Object.assign({}, options, {defaultDate: this._point.end}));
   }
 }

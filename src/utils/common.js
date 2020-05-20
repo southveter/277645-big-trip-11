@@ -157,14 +157,14 @@ export const getEventsByFilter = (events, filterType) => {
 };
 
 export const EmptyEvent = {
-  id: String(Math.floor(getRandomDate() + Math.random())),
-  type: `Bus to`,
+  id: String(Date.now() + Math.random()),
+  type: `bus`,
   city: ``,
   photos: [],
   description: ``,
-  services: [],
-  start: Math.min(getRandomDate(), getRandomDate()),
-  end: Math.max(getRandomDate(), getRandomDate()),
+  offers: [],
+  start: new Date(),
+  end: new Date(),
   price: 0,
   isFavorite: false,
 };

@@ -34,10 +34,10 @@ const renderPoints = (events, container, onDataChange, onViewChange, isDefaultSo
 };
 
 export default class TripController {
-  constructor(container, pointsModel) {
+  constructor(container, pointsModel, api) {
     this._container = container;
     this._pointsModel = pointsModel;
-
+    this._api = api;
     this._pointsControllers = [];
     this._noTasksComponent = new NoEvents();
     this._sortComponent = new TripSort();
@@ -58,8 +58,12 @@ export default class TripController {
     this._daysContainer.show();
   }
 
+  getPoints() {
+    return this._pointsModel.getPoints();
+  }
+
   render() {
-    const points = this._pointsModel.getEvents();
+    const points = this._pointsModel.getPoints();
 
     const container = this._container;
 
@@ -75,12 +79,11 @@ export default class TripController {
   }
 
   createPoint() {
-    const dayListElement = this._container.querySelector(`.trip-days`);
     if (this._creatingPoint) {
       return;
     }
 
-    this._creatingPoint = new PointController(dayListElement, this._onDataChange, this._onViewChange);
+    this._creatingPoint = new PointController(this._container, this._onDataChange, this._onViewChange);
     this._creatingPoint.render(EmptyEvent, MODE.CREATING);
     this._onViewChange();
   }
@@ -93,7 +96,7 @@ export default class TripController {
 
   _updatePoints() {
     this._removePoints();
-    this._pointsControllers = renderPoints(this._pointsModel.getEvents(), this._daysContainer, this._onDataChange, this._onViewChange);
+    this._pointsControllers = renderPoints(this._pointsModel.getPoints(), this._daysContainer, this._onDataChange, this._onViewChange);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
 
@@ -105,28 +108,44 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addEvent(newData);
-        pointController.render(newData, MODE.DEFAULT);
-
-        this._pointsControllers = [].concat(pointController, this._pointsControllers);
-        this._updatePoints();
+        this._api.createPoint(newData)
+        .then((pointModel) => {
+          this._pointsModel.addPoint(pointModel);
+          this._pointsControllers = [].concat(pointController, this._pointsControllers);
+          this._updatePoints();
+        })
+        .catch(() => {
+          pointController.shake();
+        });
       }
     } else if (newData === null) {
-      this._pointsModel.removeEvent(oldData.id);
-      this._updatePoints();
+      this._api.deletePoint(oldData.id)
+        .then(() => {
+          this._pointsModel.removePoint(oldData.id);
+          this._updatePoints();
+        })
+        .catch(() => {
+          pointController.shake();
+        });
     } else {
-      const isSuccess = this._pointsModel.updateEvent(oldData.id, newData);
+      this._api.updatePoint(oldData.id, newData)
+      .then((pointModel) => {
+        const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
 
-      if (isSuccess) {
-        pointController.render(newData, MODE.DEFAULT);
-      }
+        if (isSuccess) {
+          this._updatePoints();
+        }
+      })
+      .catch(() => {
+        pointController.shake();
+      });
     }
   }
 
   _onSortTypeChange(sortType) {
     let sortedPoints = [];
     let isDefaultSorting = false;
-    const points = this._pointsModel.getEvents();
+    const points = this._pointsModel.getPoints();
 
     switch (sortType) {
       case SORT_TYPE.EVENT:
