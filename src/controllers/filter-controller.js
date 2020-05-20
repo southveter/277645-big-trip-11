@@ -36,8 +36,6 @@ export default class FilterController {
 
     if (oldComponent) {
       replace(this._tripFiltersComponent, oldComponent);
-    } else {
-      render(container, this._tripFiltersComponent, RenderPosition.AFTERBEGIN);
     }
   }
 
