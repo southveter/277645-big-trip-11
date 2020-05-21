@@ -1,6 +1,7 @@
-import {CITIES, TRAVEL_TRANSPORT, TRAVEL_ACTIVITY, Placeholder} from '../../consts';
+import {TRAVEL_TRANSPORT, TRAVEL_ACTIVITY, Placeholder} from '../../consts';
 import {EmptyEvent, getUpperCaseFirstLetter} from '../../utils/common';
 import moment from 'moment';
+import Store from '../../models/store.js';
 
 const createEventsChooserMurkup = (choosers) => {
   return choosers.map((typeTransport) => {
@@ -12,15 +13,15 @@ const createEventsChooserMurkup = (choosers) => {
   }).join(`\n`);
 };
 
-const getServices = (services) => {
-  return services.map((service) => {
+const getOffers = (offers) => {
+  return offers.map((offer) => {
     return (`
       <div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-${service.title}" type="checkbox" name="event-${service.title}"  ${service.isChecked ? `checked` : ``}>
-      <label class="event__offer-label" for="event-${service.title}">
-        <span class="event__offer-title">${service.title}</span>
+      <input class="event__offer-checkbox  visually-hidden" id="event-${offer.title}" type="checkbox" name="event-${offer.title}"  ${offer.isChecked ? `checked` : ``}>
+      <label class="event__offer-label" for="event-${offer.title}">
+      <span class="event__offer-title">${offer.title}</span>
         &plus;
-        &euro;&nbsp;<span class="event__offer-price">${service.price}</span>
+        &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
         </label>
       </div>
     `);
@@ -29,41 +30,46 @@ const getServices = (services) => {
 
 const getPhotosList = (photos) => {
   return photos.map((photo) => {
-    return (`<img class="event__photo" src="${photo}" alt="Event photo">`);
+    return (`<img class="event__photo" src="${photo.src}" alt="${photo.description}">`);
   }).join(``);
 };
 
-const getCities = (cities, elem) => {
-  return cities.map((cityName) => {
-    return (`<option value=${cityName} ${cityName === elem ? `selected` : ``}>${cityName}</option>`);
+const getCities = (citiesName, elem) => {
+  return citiesName.map((cityName) => {
+    return (`<option value="${cityName}" ${cityName === elem ? `selected` : ``}>${cityName}</option>`);
   }).join(``);
 };
 
-export const createEditEventTemplate = (cardData, options) => {
+export const createEditEventTemplate = (point, options) => {
+
+  const {start, end, price, isFavorite, index} = point;
+  const {type, city, description, photos, offers, externalData} = options;
   let creatingPoint = false;
 
-  if (cardData === EmptyEvent) {
+  if (point === EmptyEvent) {
     creatingPoint = true;
   }
 
-  const {start, end, price, isFavorite, index} = cardData;
-  const {type, city, description, photos, services} = options;
+  const cities = Store.getDestinations().map((destination) => destination.name);
   const startDate = moment(start).format(`DD/MM/YY HH:mm`);
   const endDate = moment(end).format(`DD/MM/YY HH:mm`);
-  const servicesList = getServices(services);
+  const offersList = getOffers(offers);
   const photosList = getPhotosList(photos);
-  const citiesList = getCities(CITIES, city);
+  const citiesList = getCities(cities, city);
   const isFavourite = isFavorite ? `checked` : ``;
+  const deleteButtonText = externalData.deleteButtonText;
+  const saveButtonText = externalData.saveButtonText;
 
   return (
     `<form class="event  event--edit" action="#" method="post">
       <header class="event__header">
+      <input class="visually-hidden" name="event-current-type" id="event-current-type-name" value="${type}">
         <div class="event__type-wrapper">
           <label class="event__type  event__type-btn" for="event-type-toggle-1">
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+          <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox">
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
@@ -103,8 +109,8 @@ export const createEditEventTemplate = (cardData, options) => {
           </label>
           <input class="event__input  event__input--price" id="event-price-${index}" type="text" name="event-price" maxlength="5" value="${price}">
         </div>
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">${creatingPoint ? `Cancel` : `Delete`}</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit">${saveButtonText}</button>
+        <button class="event__reset-btn" type="reset">${creatingPoint ? `Cancel` : deleteButtonText}</button>
         <input id="event-favorite-${index}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavourite}>
         <label class="event__favorite-btn" ${creatingPoint ? `visually-hidden` : ``}" for="event-favorite-${index}">
           <span class="visually-hidden">Add to favorite</span>
@@ -117,23 +123,27 @@ export const createEditEventTemplate = (cardData, options) => {
           <span class="visually-hidden">Open event</span>
         </button>`}
       </header>
-      <section class="event__details">
-        <section class="event__section  event__section--offers">
+      ${offers.length > 0 || description.length > 0 ?
+      `<section class="event__details">
+          ${offers.length > 0 ?
+      `<section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
-          ${servicesList}
+          ${offersList}
           </div>
-        </section>
-        <section class="event__section  event__section--destination">
+          </section>` : ``}
+          ${description.length > 0 ?
+      `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${description}</p>
-          <div class="event__photos-container">
+          ${photos.length > 0 ?
+      `<div class="event__photos-container">
             <div class="event__photos-tape">
             ${photosList}
             </div>
-          </div>
-        </section>
-      </section>
+            </div>` : ``}
+            </section>` : ``}
+          </section>` : ``}
       </form>`
   );
 };
