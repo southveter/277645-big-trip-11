@@ -1,7 +1,8 @@
 import TripFilter from '@components/trip-filter/trip-filter';
 import {render, RenderPosition, replace} from '../utils/render';
-import {getEventsByFilter} from '../utils/common';
 import {FILTER_TYPE} from '../consts';
+
+const disabledStyle = `pointer-events: none; cursor: default;`;
 
 export default class FilterController {
   constructor(container, pointsModel) {
@@ -19,12 +20,10 @@ export default class FilterController {
 
   render() {
     const container = this._container;
-    const allEvents = this._pointsModel.getPointsAll();
 
     const filters = Object.values(FILTER_TYPE).map((filterType) => {
       return {
         name: filterType,
-        count: getEventsByFilter(allEvents, filterType).length,
         checked: filterType === this._activeFilterType,
       };
     });
@@ -36,7 +35,13 @@ export default class FilterController {
 
     if (oldComponent) {
       replace(this._tripFiltersComponent, oldComponent);
+    } else {
+      render(container, this._tripFiltersComponent, RenderPosition.AFTERBEGIN);
     }
+  }
+
+  disableEmptyFilter(currentFilter, isDisabled) {
+    this._tripFiltersComponent. switchFilterAvailability(currentFilter, isDisabled, disabledStyle);
   }
 
   _onFilterChange(filterType) {

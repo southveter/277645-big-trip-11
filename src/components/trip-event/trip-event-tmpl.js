@@ -15,12 +15,11 @@ const getOffers = (offers) => {
 };
 
 export const createTripEventTemplate = (event) => {
-
-  const {type, city, price, offers, startDate, endDate} = event;
+  const {type, city, price, offers, start, end} = event;
   const isArrive = !!offers;
-  const duration = moment.duration(moment(endDate).diff(moment(startDate)));
-  const startDateTime = moment(startDate).format(`YYYY-MM-DDThh:mm`);
-  const endDateTime = moment(endDate).format(`YYYY-MM-DDThh:mm`);
+  const duration = moment.duration(moment(end).diff(moment(start)));
+  const startDateTime = moment(start).format(`YYYY-MM-DDThh:mm`);
+  const endDateTime = moment(end).format(`YYYY-MM-DDThh:mm`);
   let days = duration.days();
   let hours = duration.hours();
   let minutes = duration.minutes();

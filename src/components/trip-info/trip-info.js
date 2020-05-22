@@ -10,6 +10,6 @@ export default class TripInfo extends Abstract {
   }
 
   getTemplate() {
-    return createTripInfoTemplate(this._pointsModel.getPoints());
+    return createTripInfoTemplate(this._pointsModel.getPointsAll());
   }
 }

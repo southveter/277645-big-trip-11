@@ -18,6 +18,15 @@ export default class TripFilter extends Abstract {
     return createTripFilterTemplate(this._names);
   }
 
+  switchFilterAvailability(filter, isDisabled, style) {
+    const item = this.getElement().querySelector(`#filter-${filter}`);
+
+    if (item) {
+      item.disabled = isDisabled;
+      this.getElement().querySelector(`#${filter}`).style = style;
+    }
+  }
+
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`change`, (evt) => {
       const filterName = getFilterNameById(evt.target.id);

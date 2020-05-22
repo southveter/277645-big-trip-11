@@ -18,6 +18,10 @@ export default class Points {
     return this._points;
   }
 
+  getActiveFilterType() {
+    return this._activeFilterType;
+  }
+
   setPoints(points) {
     this._points = Array.from(points);
     this._callHandlers(this._dataChangeHandlers);
